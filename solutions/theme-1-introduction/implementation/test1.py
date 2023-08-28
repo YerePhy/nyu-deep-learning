@@ -42,7 +42,6 @@ J_autograd = F.mse_loss(y_hat_autograd, y)
 net_autograd.zero_grad()
 J_autograd.backward()
 
-breakpoint()
 print((net_autograd.linear1.weight.grad.data - net.grads['dJdW1']).norm() < 1e-3)
 print((net_autograd.linear1.bias.grad.data - net.grads['dJdb1']).norm() < 1e-3)
 print((net_autograd.linear2.weight.grad.data - net.grads['dJdW2']).norm() < 1e-3)
