@@ -55,9 +55,43 @@ s[n]=(x\ast k)[n]=\sum_{m=-M}^{M}x[n+m]k[m]
 $$
 **Let’s consider an input $x[n], x : \{1,2,3,4,5\} ∈ \mathbb{R}^2$ of dimension $5$, with $2$ channels, and a convolutional layer $f_W$ with one filter, with kernel size $3$, stride of $2$, no dilation, and no padding. The only parameters of the convolutional layer is the weight $W, W ∈ \mathbb{R}^{1\times 2\times 3}$, there’s no bias and no non-linearity.**
 
+**NOTE** (notation): I will use indexes from $0$ to $N-1$ instead of $-M$ to $M$.
+
 **(i) What is the dimension of the output $f_W(x)$? Provide an expression for the value of elements of the convolutional layer output $f_W (x)$. Example answer format here and in the following sub-problems: $f_W(x) \in \mathbb{R}^{42\times 42\times 42}, f_W(x)[i,j,k]=42$ .**
 
+Let's first compute the output dimensions.
+$$
+\begin{align}
+&H_{in}=5, C_{in}=2, S[0]=2, K[0]=3, P[0]=0, D[0]=0. \rightarrow H_{out}=2.\\
+&C_{in}=2, F=1 \rightarrow C_{out} = 1. \\
+&f_W(x) \in \mathbb{R}^{1\times 1\times 2}.
+\end{align}
+$$
+Then, the output elements are given by:
+$$
+\begin{align}
+&f[i, j]=\sum_{c=0}^{1}\sum_{k=0}^{2}x[c, 2j+k]W[i, c, k].\\
+&i=0.\\
+&j=0, 1.\\
+\end{align}
+$$
+
 **(ii) What is the dimension of $\frac{\partial f_W(x)}{\partial W}$. Provide an expression for the values of the derivative $\frac{\partial f_W(x)}{\partial W}$.**
+
+In tensor notation:
+$$
+\begin{align}
+f_{ij} &= x_{c(2j+k)}W_{ick}.\\
+\frac{\partial f_{ij} }{\partial W_{nml}} &= x_{c(2j+k)}\delta_{ni}\delta_{mc}\delta_{lk} = x_{m(2j+l)}\delta_{in}.
+\end{align}
+$$
+Then, whe can write:
+$$
+f[n, j, m, l] = x_{m(2j+l)}.
+$$
+#TODO
+
+
 
 **(iii) What is the dimension of $\frac{\partial f_W(x)}{\partial x}$. Provide an expression for the values of the derivative $\frac{\partial f_W(x)}{\partial x}$.**
 
