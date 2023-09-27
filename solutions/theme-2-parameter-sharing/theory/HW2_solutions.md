@@ -55,51 +55,73 @@ s[n]=(x\ast k)[n]=\sum_{m=-M}^{M}x[n+m]k[m]
 $$
 **Let’s consider an input $x[n], x : \{1,2,3,4,5\} ∈ \mathbb{R}^2$ of dimension $5$, with $2$ channels, and a convolutional layer $f_W$ with one filter, with kernel size $3$, stride of $2$, no dilation, and no padding. The only parameters of the convolutional layer is the weight $W, W ∈ \mathbb{R}^{1\times 2\times 3}$, there’s no bias and no non-linearity.**
 
-**NOTE** (notation): I will use indexes from $0$ to $N-1$ instead of $-M$ to $M$.
+**NOTE** (notation): I will use [tensor notation](https://en.wikipedia.org/wiki/Abstract_index_notation) and [Einstein summation criteria](https://en.wikipedia.org/wiki/Einstein_notation), see also [Kronecker's $\delta$](https://en.wikipedia.org/wiki/Kronecker_delta), very useful in derivatives of linear functions, the final expressions will be given in classical notation as well. My convolution will run from $0$ to $N-1$ instead of $-M$ to $M$. Regarding to the indexes of the tensors:
+
+- $x$: has two indexes; one for channels and one spatial. 
+- $W$: has three indexes; one for the number of filters (which is one in this case) one for channels and one spatial.
+- $f$: one for channels and one spatial.
 
 **(i) What is the dimension of the output $f_W(x)$? Provide an expression for the value of elements of the convolutional layer output $f_W (x)$. Example answer format here and in the following sub-problems: $f_W(x) \in \mathbb{R}^{42\times 42\times 42}, f_W(x)[i,j,k]=42$ .**
 
-Let's first compute the output dimensions.
+Let's first compute the output dimensions (this will give us the limits of the summation in the convolution operation):
 $$
 \begin{align}
-&H_{in}=5, C_{in}=2, S[0]=2, K[0]=3, P[0]=0, D[0]=0. \rightarrow H_{out}=2.\\
-&C_{in}=2, F=1 \rightarrow C_{out} = 1. \\
-&f_W(x) \in \mathbb{R}^{1\times 1\times 2}.
+&H_{in}=5, S[0]=2, K[0]=3, P[0]=0, D[0]=0. \rightarrow H_{out}=2.\\
+&F=1 \rightarrow C_{out} = 1. \\
+&f_W(x) \in \mathbb{R}^{1\times 2}.
 \end{align}
 $$
-Then, the output elements are given by:
+Then, the output elements are given by (classical notation):
 $$
-\begin{align}
-&f[i, j]=\sum_{c=0}^{1}\sum_{k=0}^{2}x[c, 2j+k]W[i, c, k].\\
-&i=0.\\
-&j=0, 1.\\
-\end{align}
+f_W(x)[i, j] = \sum_{c=0}^{1}\sum_{k=0}^{2}x[c, 2j+k]W[i, c, k], \;\;\;\; i=0 \;\; j=0, 1 \;\; c=0, 1 \;\; k=0, 1, 2.
 $$
+
+In tensor notation:
+$$
+f_{ij}=x_{c(2j+k)}W_{ick}.
+$$
+
 
 **(ii) What is the dimension of $\frac{\partial f_W(x)}{\partial W}$. Provide an expression for the values of the derivative $\frac{\partial f_W(x)}{\partial W}$.**
 
-In tensor notation (repeated index sum):
+In tensor notation:
 $$
-\begin{align}
-f_{ij} &= x_{c(2j+k)}W_{ick}.\\
-\frac{\partial f_{ij} }{\partial W_{i^{\prime}c^{\prime}k^{\prime}}} &= x_{c(2j+k)}\delta_{i^{\prime}i}\delta_{c^{\prime}c}\delta_{k^{\prime}k} = x_{c^{\prime}(2j+k^{\prime})}\delta_{i^{\prime}i}.
-\end{align}
+\frac{\partial f_{ij} }{\partial W_{i^{\prime}c^{\prime}k^{\prime}}} = x_{c(2j+k)}\delta_{i^{\prime}i}\delta_{c^{\prime}c}\delta_{k^{\prime}k} = x_{c^{\prime}(2j+k^{\prime})}\delta_{i^{\prime}i}, \;\;\;\; i, i^{\prime}=0 \;\; j=0, 1\;\; c^{\prime}=0, 1\;\; k^{\prime}=0, 1, 2.
 $$
-Then, we can write:
+In classical notation:
 $$
-\frac{\partial f}{\partial W}[i^{\prime}, j, c^{\prime}, k^{\prime}] = \frac{\partial f}{\partial W}[j, c^{\prime}, k^{\prime}] = x[c^{\prime}, 2j+k^{\prime}].
+\frac{\partial f}{\partial W}[i, j, i^{\prime}, c^{\prime}, k^{\prime}] = x[c^{\prime}, 2j+k^{\prime}],  \;\;\text{if}\;\; i=i^{\prime} \;\text{else}\; 0.
 $$
-Renaming indexes (removing primes):
-$$
-\begin{align}
-\frac{\partial f_{ij} }{\partial W_{i^{\prime}ck}} &= x_{c(2j+k)}\delta_{i^{\prime}i}.\\
-\frac{\partial f}{\partial W}[j, c, k] &= x[c, 2j+k].
-\end{align}
-$$
+
+
 This tensor have dimensions $\mathbb{R}^{2\times 2\times 3}$ or $\mathbb{R}^{1\times 2\times 2\times 3}$ if we take into account the $i$ index.
 
-![Convolution layer derivative.](figures/derivative_conv_layer.png)
+![Convolution layer derivative.](figures/derivative_conv_layer_w.png)
 
 **(iii) What is the dimension of $\frac{\partial f_W(x)}{\partial x}$. Provide an expression for the values of the derivative $\frac{\partial f_W(x)}{\partial x}$.**
 
+We have to compute $\frac{\partial f_{ij} }{\partial x_{c^{\prime}k^{\prime}}}$ (in tensor notation):
+$$
+\frac{\partial f_{ij} }{\partial x_{c^{\prime}k^{\prime}}} = W_{ick}\delta_{c^{\prime}c}\delta_{k^{\prime}(2j+k)}=W_{ic^{\prime}(k^{\prime}-2j)}.
+$$
+In classical notation:
+$$
+\frac{\partial f}{\partial x}[i, j, c^{\prime}, k^{\prime}] = W[i, c^{\prime}, k^{\prime}-2].
+$$
+
+
+It has dimension $\mathbb{R}^{1\times 2\times 2\times 3}$ .
+
 **(iv) Now, suppose you are given the gradient of the loss $\ell$ w. r. t. the output of the convolutional layer $f_W (x)$, i.e. $\frac{\partial\ell}{\partial f_W (x)}$. What is the dimension of $\frac{\partial\ell}{\partial W}$? Provide an expression for $\frac{\partial\ell}{\partial W}$. Explain similarities and differences of this expression and expression in (i).**
+
+It has the dimensions of the output $\mathbb{R}^{1\times 2}$, it must be one gradient component for each component of the output. Let's compute the derivate of $\ell$ w. r. t. the output:
+$$
+\frac{\partial\ell}{\partial W_{i^{\prime}c^{\prime}k^{\prime}}} = \frac{\partial\ell}{\partial f_{ij}}\frac{\partial f_{ij}}{\partial W_{i^{\prime}ck}} = \frac{\partial\ell}{\partial f_{i^{\prime}j}} x_{c^{\prime}(2j+k^{\prime})} \;\;\;\; i^{\prime}=0 \;\; j=0, 1\;\; c^{\prime}=0, 1\;\; k^{\prime}=0, 1, 2
+$$
+In classical notation:
+$$
+\frac{\partial\ell}{\partial W}[i^{\prime}, c^{\prime}, k^{\prime}]=\sum_{j=0}^{1} \frac{\partial\ell}{\partial f}[i^{\prime}, j] x[c^{\prime}, 2j+k^{\prime}].
+$$
+
+
+It is a convolution with dilation $2$, the stride in (i) becomes the dilation here.
