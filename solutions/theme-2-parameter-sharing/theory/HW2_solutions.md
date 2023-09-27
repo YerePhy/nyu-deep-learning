@@ -78,20 +78,27 @@ $$
 
 **(ii) What is the dimension of $\frac{\partial f_W(x)}{\partial W}$. Provide an expression for the values of the derivative $\frac{\partial f_W(x)}{\partial W}$.**
 
-In tensor notation:
+In tensor notation (repeated index sum):
 $$
 \begin{align}
 f_{ij} &= x_{c(2j+k)}W_{ick}.\\
-\frac{\partial f_{ij} }{\partial W_{nml}} &= x_{c(2j+k)}\delta_{ni}\delta_{mc}\delta_{lk} = x_{m(2j+l)}\delta_{in}.
+\frac{\partial f_{ij} }{\partial W_{i^{\prime}c^{\prime}k^{\prime}}} &= x_{c(2j+k)}\delta_{i^{\prime}i}\delta_{c^{\prime}c}\delta_{k^{\prime}k} = x_{c^{\prime}(2j+k^{\prime})}\delta_{i^{\prime}i}.
 \end{align}
 $$
-Then, whe can write:
+Then, we can write:
 $$
-f[n, j, m, l] = x_{m(2j+l)}.
+\frac{\partial f}{\partial W}[i^{\prime}, j, c^{\prime}, k^{\prime}] = \frac{\partial f}{\partial W}[j, c^{\prime}, k^{\prime}] = x[c^{\prime}, 2j+k^{\prime}].
 $$
-#TODO
+Renaming indexes (removing primes):
+$$
+\begin{align}
+\frac{\partial f_{ij} }{\partial W_{i^{\prime}ck}} &= x_{c(2j+k)}\delta_{i^{\prime}i}.\\
+\frac{\partial f}{\partial W}[j, c, k] &= x[c, 2j+k].
+\end{align}
+$$
+This tensor have dimensions $\mathbb{R}^{2\times 2\times 3}$ or $\mathbb{R}^{1\times 2\times 2\times 3}$ if we take into account the $i$ index.
 
-
+![Convolution layer derivative.](figures/derivative_conv_layer.png)
 
 **(iii) What is the dimension of $\frac{\partial f_W(x)}{\partial x}$. Provide an expression for the values of the derivative $\frac{\partial f_W(x)}{\partial x}$.**
 
