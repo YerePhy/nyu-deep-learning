@@ -106,7 +106,7 @@ $$
 $$
 In classical notation:
 $$
-\frac{\partial f}{\partial x}[i, j, c^{\prime}, k^{\prime}] = W[i, c^{\prime}, k^{\prime}-2].
+\frac{\partial f}{\partial x}[i, j, c^{\prime}, k^{\prime}] = W[i, c^{\prime}, k^{\prime}-2j].
 $$
 
 
