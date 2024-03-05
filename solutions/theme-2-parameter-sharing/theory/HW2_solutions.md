@@ -125,3 +125,26 @@ $$
 
 
 It is a convolution with dilation $2$, the stride in (i) becomes the dilation here.
+
+## Recurrent Neural Networks
+
+In this section we consider a simple recurrent neural network defined as follows:
+$$
+\begin{align}
+& c_t = \sigma (W_c x_t + W_z z_{t-1}).\\
+& z_t = c_t \odot z_{t-1} + (1-c_t) \odot W_x x_t.
+\end{align}
+$$
+where $\sigma$ is element-wise sigmoid, $x_t\in\mathbb{R}^n, z_t \in \mathbb{R}^m, W_c \in \mathbb{R}^{m\times n}, W_z \in \mathbb{R}^{m\times m}, W_x \in \mathbb{R}^{m\times n}$, $\odot$ is the Hadamard product.
+
+**a. Draw a diagram for this recurrent neural network, similar to the diagram
+of RNN we had in class. We suggest using [diagrams.net](https://www.drawio.com/).**
+
+![RNN diagram.](figures/rnn.png)
+
+**b. What is the dimension of $c_t$**
+
+**c. Suppose that we run the RNN to get a sequence of $z_t$ for $t$ from $1$ to $K$. As-
+suming we know the derivative $\frac{\partial\ell}{\partial z_t}$, provide dimension of an expression for values $\frac{\partial\ell}{\partial W_x}$. What are the similarities of backward pass and forward pass in this RNN.**
+
+**d. Can this network be subject to vanishing or exploding gradients? Why?** 
