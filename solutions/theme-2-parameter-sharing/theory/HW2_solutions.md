@@ -142,9 +142,17 @@ of RNN we had in class. We suggest using [diagrams.net](https://www.drawio.com/)
 
 ![RNN diagram.](figures/rnn.png)
 
-**b. What is the dimension of $c_t$**
+**b. What is the dimension of $c_t$?** $c_{t}\in \mathbb{R}^m$.
 
-**c. Suppose that we run the RNN to get a sequence of $z_t$ for $t$ from $1$ to $K$. As-
-suming we know the derivative $\frac{\partial\ell}{\partial z_t}$, provide dimension of an expression for values $\frac{\partial\ell}{\partial W_x}$. What are the similarities of backward pass and forward pass in this RNN.**
+**c. Suppose that we run the RNN to get a sequence of $z_t$ for $t$ from $1$ to $K$. Assuming we know the derivative $\frac{\partial\ell}{\partial z_t}$, provide dimension of an expression for values $\frac{\partial\ell}{\partial W_x}$​. What are the similarities of backward pass and forward pass in this RNN?**
 
+Assuming [numerator layout](https://en.wikipedia.org/wiki/Matrix_calculus):
+$$
+\begin{align}
+\frac{\partial\ell}{\partial z_t} & \in \mathbb{R}^{1\times m}.\\
+c_t & \in \mathbb{R}^{m\times 1}.\\
+x_t & \in \mathbb{R}^{n\times 1}.\\
+\frac{\partial\ell}{\partial W_{x}} & \in \mathbb{R}^{n\times m}.
+\end{align}
+$$
 **d. Can this network be subject to vanishing or exploding gradients? Why?** 
